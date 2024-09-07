@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://fnq22c3cssds"]
+[gd_scene load_steps=3 format=3 uid="uid://fnq22c3cssds"]
 
 [ext_resource type="PackedScene" uid="uid://57d6oxt3t46m" path="res://levels/base_level.tscn" id="1_l28j8"]
+[ext_resource type="PackedScene" uid="uid://dl1smleegxe6m" path="res://collectables/sword/collectable_sword.tscn" id="2_esxye"]
 
 [node name="IslandoT1" instance=ExtResource("1_l28j8")]
 
@@ -9,3 +10,6 @@ layer_0/tile_data = PackedInt32Array(655390, 131072, 2, 589854, 131072, 0, 72092
 
 [node name="Character" parent="." index="2"]
 position = Vector2(44, 276)
+
+[node name="CollectableSword" parent="." index="3" instance=ExtResource("2_esxye")]
+position = Vector2(174, 278)

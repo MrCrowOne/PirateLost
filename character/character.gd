@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name BaseCharacter
 
+var _has_sword: bool = false
 var dashing = false
 var _jump_count: int = 0
 var _dash_count: int = 0
@@ -58,7 +59,9 @@ func _horizontal_movement() -> void:
 		return
 	velocity.x = move_toward(velocity.x, 0, _speed)
 
-
-
 func _on_dash_timer_timeout() -> void:
 	dashing = false
+
+func update_sword_state(_state: bool) -> void:
+	_has_sword = _state
+	_character_texture.update_suffix(_has_sword)

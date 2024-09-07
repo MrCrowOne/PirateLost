@@ -1,0 +1,58 @@
+[gd_scene load_steps=13 format=3 uid="uid://dl1smleegxe6m"]
+
+[ext_resource type="PackedScene" uid="uid://j44n8i6waunn" path="res://collectables/components/collectable_component.tscn" id="1_s80sb"]
+[ext_resource type="Texture2D" uid="uid://dmen5xbu2s6wu" path="res://collectables/sword/idle/Sword Idle 01.png" id="2_870vw"]
+[ext_resource type="Script" path="res://collectables/sword/collectable_sword.gd" id="2_hgyvh"]
+[ext_resource type="Texture2D" uid="uid://dg7etv3ixyddn" path="res://collectables/sword/idle/Sword Idle 02.png" id="3_mdqqx"]
+[ext_resource type="Texture2D" uid="uid://dm6cq11j2vb5u" path="res://collectables/sword/idle/Sword Idle 03.png" id="4_w7q64"]
+[ext_resource type="Texture2D" uid="uid://cx16ukr2ohkdq" path="res://collectables/sword/idle/Sword Idle 04.png" id="5_52hks"]
+[ext_resource type="Texture2D" uid="uid://blm2whxmtla1w" path="res://collectables/sword/idle/Sword Idle 05.png" id="6_f4bb6"]
+[ext_resource type="Texture2D" uid="uid://c0ekxhx1v65xw" path="res://collectables/sword/idle/Sword Idle 06.png" id="7_77ii8"]
+[ext_resource type="Texture2D" uid="uid://dmy175kdhjq1a" path="res://collectables/sword/idle/Sword Idle 07.png" id="8_vjprr"]
+[ext_resource type="Texture2D" uid="uid://db8w0dj6g23ke" path="res://collectables/sword/idle/Sword Idle 08.png" id="9_jeii0"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gg04d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_870vw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_mdqqx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_w7q64")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_52hks")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_f4bb6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_77ii8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_vjprr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_jeii0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2bouj"]
+size = Vector2(19, 7)
+
+[node name="CollectableSword" instance=ExtResource("1_s80sb")]
+script = ExtResource("2_hgyvh")
+
+[node name="Texture" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_gg04d")
+autoplay = "default"
+
+[node name="Collision" parent="." index="1"]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_2bouj")

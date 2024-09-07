@@ -3,6 +3,7 @@ extends AnimatedSprite2D
 class_name CharacterTexture
 
 var _is_on_action: bool = false
+var _suffix: String = ""
 
 @export_category("Objects")
 @export var _character: BaseCharacter
@@ -14,19 +15,19 @@ func animate(_velocity: Vector2) -> void:
 		return
 	
 	if not _velocity:
-		play("idle")
+		play("idle" + _suffix)
 		return
 	
 	if _velocity.y > 0:
-		play("fall")
+		play("fall" + _suffix)
 		return
 	
 	if _velocity.y < 0:
-		play("jump")
+		play("jump" + _suffix)
 		return
 	
 	if _velocity.x:
-		play("run")
+		play("run" + _suffix)
 		return
 	
 func _verify_direction(_direction: float) -> void:
@@ -38,8 +39,13 @@ func _verify_direction(_direction: float) -> void:
 
 func action_animation(_action_name: String) -> void:
 	_is_on_action = true
-	play(_action_name)
+	play(_action_name  + _suffix)
 
+func update_suffix(_state: bool) -> void:
+	if _state:
+		_suffix = "_with_sword"
+		return
+	_suffix = ""
 
 func _on_animation_finished() -> void:
 	_character.set_physics_process(true)
