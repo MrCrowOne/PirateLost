@@ -1,0 +1,126 @@
+[gd_scene load_steps=22 format=3 uid="uid://dqd1cgd50pndb"]
+
+[ext_resource type="Texture2D" uid="uid://c5qhrk0rbvm7f" path="res://character/without_sword/idle/1.png" id="1_20u8u"]
+[ext_resource type="Script" path="res://character/character.gd" id="1_bflh5"]
+[ext_resource type="Texture2D" uid="uid://40ivig0u8ovc" path="res://character/without_sword/idle/2.png" id="2_6lyfo"]
+[ext_resource type="Texture2D" uid="uid://bgrlskmqfawqt" path="res://character/without_sword/fall/1.png" id="2_qpu78"]
+[ext_resource type="Texture2D" uid="uid://mvwhq46616fx" path="res://character/without_sword/idle/3.png" id="3_ny13j"]
+[ext_resource type="Texture2D" uid="uid://cxcw2oxd1w0lx" path="res://character/without_sword/idle/4.png" id="4_mjnvi"]
+[ext_resource type="Texture2D" uid="uid://dhl66lnt70nr5" path="res://character/without_sword/idle/5.png" id="5_vf0sm"]
+[ext_resource type="Texture2D" uid="uid://djqk62p32h2n5" path="res://character/without_sword/jump/1.png" id="8_5rwyq"]
+[ext_resource type="Texture2D" uid="uid://cela1p8dxk8rp" path="res://character/without_sword/jump/2.png" id="9_ls8yp"]
+[ext_resource type="Texture2D" uid="uid://vicpcb000l40" path="res://character/without_sword/jump/3.png" id="10_l3n53"]
+[ext_resource type="Texture2D" uid="uid://5si7kkq3lit2" path="res://character/without_sword/land/1.png" id="11_ipj8m"]
+[ext_resource type="Texture2D" uid="uid://d45id7b1fmmg" path="res://character/without_sword/land/2.png" id="12_x2r0q"]
+[ext_resource type="Texture2D" uid="uid://4qt4ydf0hkc8" path="res://character/without_sword/run/1.png" id="13_bo3s3"]
+[ext_resource type="Texture2D" uid="uid://do0vwavrne170" path="res://character/without_sword/run/2.png" id="14_funjo"]
+[ext_resource type="Texture2D" uid="uid://bbs6fkpkl4oj4" path="res://character/without_sword/run/3.png" id="15_ydqy0"]
+[ext_resource type="Texture2D" uid="uid://gnxihojncyyw" path="res://character/without_sword/run/4.png" id="16_useah"]
+[ext_resource type="Texture2D" uid="uid://bf7y8eqoaaso3" path="res://character/without_sword/run/5.png" id="17_jinyq"]
+[ext_resource type="Texture2D" uid="uid://m2sh4holksa2" path="res://character/without_sword/run/6.png" id="18_qcrdx"]
+[ext_resource type="Script" path="res://character/character_texture.gd" id="19_0www2"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wg40h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_qpu78")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_20u8u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_6lyfo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ny13j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_mjnvi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_vf0sm")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_5rwyq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ls8yp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_l3n53")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_ipj8m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_x2r0q")
+}],
+"loop": false,
+"name": &"land",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_bo3s3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_funjo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ydqy0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_useah")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_jinyq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_qcrdx")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4f5pc"]
+size = Vector2(16, 22)
+
+[node name="Character" type="CharacterBody2D" node_paths=PackedStringArray("_character_texture")]
+script = ExtResource("1_bflh5")
+_jump_velocity = -300.0
+_dash_speed = 700.0
+_character_texture = NodePath("Texture")
+
+[node name="Texture" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("_character")]
+sprite_frames = SubResource("SpriteFrames_wg40h")
+animation = &"fall"
+autoplay = "idle"
+script = ExtResource("19_0www2")
+_character = NodePath("..")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_4f5pc")
+
+[node name="Dash_timer" type="Timer" parent="."]
+wait_time = 0.2
+
+[connection signal="animation_finished" from="Texture" to="Texture" method="_on_animation_finished"]
+[connection signal="timeout" from="Dash_timer" to="." method="_on_dash_timer_timeout"]
