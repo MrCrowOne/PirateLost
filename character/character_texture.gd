@@ -7,6 +7,7 @@ var _suffix: String = ""
 
 @export_category("Objects")
 @export var _character: BaseCharacter
+@export var _attack_area_collision: CollisionShape2D
 
 func animate(_velocity: Vector2) -> void:
 	_verify_direction(_velocity.x)
@@ -33,9 +34,11 @@ func animate(_velocity: Vector2) -> void:
 func _verify_direction(_direction: float) -> void:
 	if _direction > 0:
 		flip_h = false
+		_attack_area_collision.position.x = 24
 	
 	if _direction < 0:
 		flip_h = true
+		_attack_area_collision.position.x = -24
 
 func action_animation(_action_name: String) -> void:
 	_is_on_action = true
@@ -56,6 +59,23 @@ func _on_animation_finished() -> void:
 
 
 func _on_frame_changed() -> void:
+	var _current_animation: StringName = animation
+	if (
+		_current_animation.begins_with("air_attack") 
+		or _current_animation.begins_with("attack")
+	):
+		if _current_animation.begins_with("air_attack"):
+			_attack_area_collision.position.y = 24
+		if _current_animation.begins_with("attack"):
+			_attack_area_collision.position.y = 0
+			
+		if frame == 0 or frame == 1:
+			_attack_area_collision.disabled = false
+		if frame == 2:
+			_attack_area_collision.disabled = true
+	
+		
+			
 	if animation == "throw_sword":
 		if frame == 2:
 			_character.throw_sword(flip_h)
