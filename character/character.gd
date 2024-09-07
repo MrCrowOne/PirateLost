@@ -1,8 +1,11 @@
 extends CharacterBody2D
 class_name BaseCharacter
 
+const _THROWABLE_SWORD: PackedScene = preload("res://throwables/character_sword/character_sword.tscn")
+
 var _has_sword: bool = false
 var dashing = false
+
 var _jump_count: int = 0
 var _dash_count: int = 0
 var _attack_index: int = 1
@@ -47,12 +50,16 @@ func _vertical_movement(_delta:float) -> void:
 		_dash_count = 0 #contador do dash que volta a 0 ao ficar no chão
 	
 	if not is_on_floor():
+		if _on_floor:
+			_attack_index = 1
+			
 		_on_floor = false
 		velocity.y += _gravity * _delta
 
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and _jump_count < 2:
 		_jump_count += 1
+		_attack_index = 1
 		velocity.y = _jump_velocity
 		global.spawn_effects(
 			"res://visual_effects/dust_particles/jump/jump_effect.tscn", 
@@ -83,10 +90,15 @@ func _horizontal_movement() -> void:
 func _attack_handler() -> void:
 	if not _has_sword:
 		return
+	if Input.is_action_just_pressed("throw"):
+		_character_texture.action_animation("throw_sword")
+		_has_sword = false
+		set_physics_process(false)
+		update_sword_state(false)
+		return
 		
 	if Input.is_action_just_pressed("attack") and is_on_floor():
 		_attack_animation_handler("attack_", 4)
-		
 		
 	if (
 		Input.is_action_just_pressed("attack") and 
@@ -94,18 +106,38 @@ func _attack_handler() -> void:
 		_air_attack_count < 2
 	):
 		_attack_animation_handler("air_attack_", 3, true)
+		set_physics_process(false)
 		
 		
 
 func _attack_animation_handler(_prefix: String, _index_limit: int, _on_air: bool = false) -> void:
+	global.spawn_effects(
+		"res://visual_effects/sword/" + 
+		_prefix + str(_attack_index) + "/" +
+		_prefix + str(_attack_index) + ".tscn", 
+		Vector2(24, 0), global_position, _character_texture.flip_h
+	)
+	
 	_character_texture.action_animation(_prefix + str(_attack_index))
+	
 	_attack_index += 1
-	if _attack_index >= _index_limit:
+	
+	if _attack_index == _index_limit:
 		_attack_index = 1
 	if _on_air:
 		_air_attack_count += 1
 	_attack_combo.start()
 
+func throw_sword(_is_flipped: bool) -> void:
+	var _sword: CharacterSword = _THROWABLE_SWORD.instantiate()
+	get_tree().root.call_deferred("add_child", _sword)
+	_sword.global_position = global_position
+	
+	if _is_flipped:
+		_sword.direction = Vector2(-1, 0)
+		return
+		
+	_sword.direction = Vector2(1, 0)
 #temporizador do dash
 func _on_dash_timer_timeout() -> void:
 	dashing = false

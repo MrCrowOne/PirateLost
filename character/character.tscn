@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://dqd1cgd50pndb"]
+[gd_scene load_steps=57 format=3 uid="uid://dqd1cgd50pndb"]
 
 [ext_resource type="Texture2D" uid="uid://c5qhrk0rbvm7f" path="res://character/without_sword/idle/1.png" id="1_20u8u"]
 [ext_resource type="Script" path="res://character/character.gd" id="1_bflh5"]
@@ -51,7 +51,9 @@
 [ext_resource type="Texture2D" uid="uid://behjwwas348b2" path="res://character/with_sword/run/4.png" id="31_j1qay"]
 [ext_resource type="Texture2D" uid="uid://bk7jvpwlnd0sm" path="res://character/with_sword/run/5.png" id="32_u6lcm"]
 [ext_resource type="Texture2D" uid="uid://c0iablljb7ucw" path="res://character/with_sword/run/6.png" id="33_j6kko"]
-[ext_resource type="PackedScene" uid="uid://g84dug8q35mj" path="res://visual_effects/dust_particles/fall/fall_effect.tscn" id="46_l10t8"]
+[ext_resource type="Texture2D" uid="uid://bcfpxa8ry47xe" path="res://character/with_sword/throw_sword/1.png" id="51_00wcl"]
+[ext_resource type="Texture2D" uid="uid://dmvum0lyssb06" path="res://character/with_sword/throw_sword/2.png" id="52_3ejtx"]
+[ext_resource type="Texture2D" uid="uid://bev0dhx6nack3" path="res://character/with_sword/throw_sword/3.png" id="53_3hdcw"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wg40h"]
 animations = [{
@@ -276,6 +278,20 @@ animations = [{
 "loop": true,
 "name": &"run_with_sword",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("51_00wcl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_3ejtx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_3hdcw")
+}],
+"loop": false,
+"name": &"throw_sword",
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4f5pc"]
@@ -290,7 +306,7 @@ _attack_combo = NodePath("AttackCombo")
 
 [node name="Texture" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("_character")]
 sprite_frames = SubResource("SpriteFrames_wg40h")
-animation = &"air_attack_2_with_sword"
+animation = &"throw_sword"
 autoplay = "idle"
 script = ExtResource("19_0www2")
 _character = NodePath("..")
@@ -304,11 +320,6 @@ wait_time = 0.2
 
 [node name="AttackCombo" type="Timer" parent="."]
 one_shot = true
-
-[node name="FallEffect" parent="." instance=ExtResource("46_l10t8")]
-position = Vector2(0, 2)
-frame = 0
-frame_progress = 0.0
 
 [connection signal="animation_finished" from="Texture" to="Texture" method="_on_animation_finished"]
 [connection signal="frame_changed" from="Texture" to="Texture" method="_on_frame_changed"]

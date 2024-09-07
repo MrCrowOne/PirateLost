@@ -7,6 +7,10 @@ func spawn_effects(
 	_initial_position: Vector2, _is_flipped: bool
 	) -> void:
 	var _effect: BaseEffect = load(_path).instantiate()
+	
+	if _is_flipped:
+		_offset.x = -_offset.x
+		
 	_effect.global_position = _initial_position + _offset
 	_effect.flip_h = _is_flipped
 	
