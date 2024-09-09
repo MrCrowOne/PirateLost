@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="PirateLost"
-run/main_scene="res://levels/islando_t1.tscn"
+run/main_scene="res://levels/island_t1.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
