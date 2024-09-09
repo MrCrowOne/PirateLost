@@ -1,23 +1,45 @@
-[gd_scene load_steps=4 format=3 uid="uid://chmay8m5peikg"]
+[gd_scene load_steps=5 format=3 uid="uid://chmay8m5peikg"]
 
 [ext_resource type="Script" path="res://entities/components/base_enemy.gd" id="1_2inxk"]
 [ext_resource type="Script" path="res://entities/components/enemy_texture.gd" id="2_ri3vi"]
+[ext_resource type="Script" path="res://entities/components/enemy_attack_area.gd" id="3_fn1ls"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yol5e"]
 
-[node name="BaseEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_enemy_texture", "_floor_detection_ray")]
+[node name="BaseEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_enemy_texture", "_floor_detection_ray", "_knockback_timer")]
 script = ExtResource("1_2inxk")
 _enemy_texture = NodePath("Texture")
 _floor_detection_ray = NodePath("FloorDetectionRay")
+_knockback_timer = NodePath("KnockbackTimer")
+_knockback_speed = 128.0
 
-[node name="Texture" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("_enemy")]
+[node name="Texture" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("_enemy", "_attack_area_collision")]
 sprite_frames = SubResource("SpriteFrames_yol5e")
 script = ExtResource("2_ri3vi")
 _enemy = NodePath("..")
+_attack_area_collision = NodePath("../AttackArea/Collision")
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 
 [node name="FloorDetectionRay" type="RayCast2D" parent="."]
 target_position = Vector2(0, 16)
 
+[node name="AttackArea" type="Area2D" parent="."]
+script = ExtResource("3_fn1ls")
+
+[node name="Collision" type="CollisionShape2D" parent="AttackArea"]
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="DetectionArea"]
+
+[node name="KnockbackTimer" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
 [connection signal="animation_finished" from="Texture" to="Texture" method="_on_animation_finished"]
+[connection signal="frame_changed" from="Texture" to="Texture" method="_on_frame_changed"]
+[connection signal="body_entered" from="AttackArea" to="AttackArea" method="_on_body_entered"]
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="timeout" from="KnockbackTimer" to="." method="_on_knockback_timer_timeout"]

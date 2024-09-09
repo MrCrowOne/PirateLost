@@ -16,3 +16,4 @@
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="PinkStar" parent="Enemies" instance=ExtResource("4_7hpir")]
+_knockback_speed = 256.0

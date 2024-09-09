@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://dqd1cgd50pndb"]
+[gd_scene load_steps=59 format=3 uid="uid://dqd1cgd50pndb"]
 
 [ext_resource type="Texture2D" uid="uid://c5qhrk0rbvm7f" path="res://character/without_sword/idle/1.png" id="1_20u8u"]
 [ext_resource type="Script" path="res://character/character.gd" id="1_bflh5"]
@@ -54,6 +54,7 @@
 [ext_resource type="Texture2D" uid="uid://bcfpxa8ry47xe" path="res://character/with_sword/throw_sword/1.png" id="51_00wcl"]
 [ext_resource type="Texture2D" uid="uid://dmvum0lyssb06" path="res://character/with_sword/throw_sword/2.png" id="52_3ejtx"]
 [ext_resource type="Texture2D" uid="uid://bev0dhx6nack3" path="res://character/with_sword/throw_sword/3.png" id="53_3hdcw"]
+[ext_resource type="Script" path="res://character/character_attack_area.gd" id="55_xm0ng"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wg40h"]
 animations = [{
@@ -326,6 +327,7 @@ wait_time = 0.2
 one_shot = true
 
 [node name="AttackArea" type="Area2D" parent="."]
+script = ExtResource("55_xm0ng")
 
 [node name="Collision" type="CollisionShape2D" parent="AttackArea"]
 position = Vector2(24, 0)
@@ -336,3 +338,4 @@ disabled = true
 [connection signal="frame_changed" from="Texture" to="Texture" method="_on_frame_changed"]
 [connection signal="timeout" from="Dash_timer" to="." method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="AttackCombo" to="." method="_on_attack_combo_timeout"]
+[connection signal="body_entered" from="AttackArea" to="AttackArea" method="_on_body_entered"]

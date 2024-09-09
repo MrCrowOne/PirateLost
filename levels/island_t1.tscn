@@ -17,3 +17,4 @@ position = Vector2(174, 278)
 
 [node name="PinkStar" parent="Enemies" index="0"]
 position = Vector2(408, 121)
+_knockback_speed = 128.0
